@@ -1,0 +1,97 @@
+<html>
+
+  <head>
+        <title>Hello!</title>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <style>
+            *, ::after, ::before {
+              box-sizing: inherit;
+              background-color: #D1D1F9;
+              color: rgb(8, 8, 71);
+            }
+            .moby {
+              padding: 2rem 1rem;
+              margin-bottom: 2rem;
+              border-radius: .3rem;
+              border-bottom: 0;
+              text-align: center;
+              align-content: center;
+              align-items: center;
+              padding: 4rem 2rem;
+            }
+            .moby button {
+              color: #fff;
+              background-color: rgb(6, 105, 138);
+              border-color: rgb(6, 105, 138);
+              padding: 5px;
+              border-radius: 5px;
+              margin: 5px;
+            }
+            .moby .query {
+              text-align: left;
+              border: 3px dotted #e9ecef;
+              padding: 1.5rem 1.2rem;
+              max-width: 800px;
+              min-height: 200px;
+              margin-left: auto;
+              margin-right: auto;
+              border-radius: .3rem;
+            }
+            .moby .query button:hover{
+              cursor: pointer;
+              background-color: #73abff;
+            }
+        </style>
+  </head>
+  <body>
+      
+    <div class="moby">
+      <h1>Welcome to ThriveWiSE Tech workshop!</h1>
+      <p>This is a simple web application built using containers</p>
+      <div class="query">
+        <p>Create your personal ToDo list</p>
+        <div>
+          <input id="path" type="text">
+          <button type="submit" onclick="putToServer()">ADD</button>
+          <div id="added"></div>
+        </div>
+        <div>
+          <h3>Server response</h3>
+          <button type="submit" onclick="queryServer()">REFRESH</button>
+          <p> </p>
+        </div>
+        <div id="response">
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+    function putToServer() {
+        const Http = new XMLHttpRequest();
+        const path = document.getElementById('path').value;
+        const url = "/api/put-item/";
+        Http.open("PUT", url + path);
+        Http.send();
+
+        Http.onreadystatechange = (e) => {
+            document.getElementById('path').value = '';
+            document.getElementById('added').innerHTML="<p style=\"color:blue\">Added!</p>";
+        }
+    }
+    function queryServer() {
+        const Http = new XMLHttpRequest();
+        const url = "/api/";
+        Http.open("GET", url + "list");
+        Http.send();
+
+        Http.onreadystatechange = (e) => {
+            document.getElementById('response').innerHTML = Http.responseText;
+            document.getElementById('added').innerHTML="<p></p>";
+        }
+    }
+    </script>
+  
+  </body>
+
+</html>

@@ -1,0 +1,36 @@
+version: "3.4"
+services:
+  db:
+    image: db:latest
+    build:
+      network: host
+      context: ./db
+      dockerfile: ./Dockerfile
+    restart: always
+    volumes:
+      - dynamodb-local:/home/dynamodblocal/db
+
+  backend-service:
+    image: backend-service:latest
+    build: 
+      network: host
+      context: ./backend-service
+      dockerfile: ./Dockerfile
+    restart: always
+    environment:
+      - ENDPOINT=http://db:8080
+
+  webserver:
+    image: webserver:latest
+    build: 
+      network: host
+      context: ./webserver
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - 80:80
+
+volumes:
+  dynamodb-local:
+    driver: local
+
